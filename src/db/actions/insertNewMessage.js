@@ -6,11 +6,10 @@ const fetchUser = require('./fetchUser');
 const createNewUser = require('./createNewUser');
 
 const insertNewMessage = async ({
-  phoneString,
+  phoneNumber,
   message,
 }) => {
   const createdAt = getCurrentTimestamp();
-  const phoneNumber = parseInt(phoneString.slice(2), 10);
 
   let user = await fetchUser({ phoneNumber });
 
@@ -22,8 +21,14 @@ const insertNewMessage = async ({
   const values = [message, user.phone_number, createdAt];
 
   return db.query(query, values)
-    .then(res => console.log(res))
-    .catch(err => console.error(err));
+    .then((res) => {
+      console.log(res);
+      return res;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };
 
 module.exports = insertNewMessage;
